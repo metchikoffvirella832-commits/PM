@@ -16,7 +16,9 @@ import {
   Info,
   Check,
   X,
-  Loader2
+  Loader2,
+  BookOpen,
+  Target
 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 import { cn } from './lib/utils';
@@ -46,6 +48,8 @@ export default function App() {
   const [gameActive, setGameActive] = useState(false);
   const [gameTarget, setGameTarget] = useState({ x: 0, y: 0 });
   const [gameTimer, setGameTimer] = useState(0);
+  const [userInput, setUserInput] = useState('');
+  const [evaluating, setEvaluating] = useState(false);
 
   const selectedCompany = COMPANY_TYPES.find(c => c.id === userProfile.selectedCompanyId) || COMPANY_TYPES[0];
 
@@ -71,19 +75,27 @@ export default function App() {
         - 职业进度：${currentStats.careerProgress}/100
         - 任期：${currentStats.tenureWeeks} 周
 
-        上一次行动：${lastHistory.length > 0 ? lastHistory[lastHistory.length - 1].choice.text : '刚刚开始'}
+        上一次行动：${lastHistory.length > 0 ? lastHistory[lastHistory.length - 1].choice.text : '刚刚入职'}
         上一次反馈：${lastHistory.length > 0 ? lastHistory[lastHistory.length - 1].choice.feedback : '无'}
 
-        任务：生成一个新的挑战场景。
+        任务：生成一个挑战场景。
+        
+        特别说明：如果这是玩家的第一个场景（上一次行动为“刚刚入职”），请生成一个与玩家背景高度相关的“入职第一天”或“第一个任务”场景。
+        例如：
+        - 技术转产品：第一个任务可能是写 PRD 或与老同事对齐逻辑。
+        - 创业失败者：可能是被分配到一个边缘项目，考验心态。
+        - 校园实习生：可能是领电脑、找导师、或者被老员工使唤。
+        - 大厂背景：可能是复杂的入职培训或权限申请流程。
         
         设计指南：
-        1. 深度结合公司特质：
+        1. 混合交互模式：每个场景都必须提供 2-3 个预设选项 (CHOICE)，同时玩家也可以选择在对话框中输入自定义回复 (DIALOGUE)。
+        2. 深度结合公司特质：
            - 大厂：强调流程、对齐、PPT、政治、OKR。
            - 初创：强调速度、混乱、多面手、生存、技术债。
            - 传统：强调业务逻辑、线下复杂度、沟通代沟、数字化阻力。
            - 外包：强调客户需求、交付期、成本、多项目切换。
            - 校园/实习：强调学业与工作的平衡、转正压力、导师关系、校园思维与职场思维的碰撞。
-        2. 结合玩家背景、学历与学校层次：
+        3. 结合玩家背景、学历与学校层次：
            - 在校生：强调期末考试压力、论文压力、对职场的好奇与畏惧。
            - 学历与学校差异化：
              - 专科/专科院校：强调执行力、技能点的快速应用、可能面临的学历歧视或逆袭机会。
@@ -121,6 +133,7 @@ export default function App() {
       });
 
       const newScenario = JSON.parse(response.text || '{}') as Scenario;
+      console.log("Generated Scenario:", newScenario);
       setCurrentScenario(newScenario);
     } catch (error) {
       console.error("Failed to generate scenario:", error);
@@ -219,24 +232,25 @@ export default function App() {
     return () => clearInterval(interval);
   }, [gameActive, gameTimer]);
 
-  const proceedToGame = () => {
+  const proceedToGame = async () => {
     if (!challengeResult?.success) {
       setStatus(GameStatus.SETUP);
       setChallengeResult(null);
       return;
     }
 
-    const initialStatsWithCompany = {
+    const initialStatsWithCompany: GameStats = {
       ...INITIAL_STATS,
-      ...selectedCompany.initialStats
+      ...selectedCompany.initialStats,
+      stage: userProfile.background === '在校大学生' ? '实习生' : '初级产品经理'
     };
     setStats(initialStatsWithCompany);
     setHistory([]);
-    setStatus(GameStatus.PLAYING);
-    const firstScenario = { ...INITIAL_SCENARIOS[0] };
-    firstScenario.description = firstScenario.description.replace('${name}', userProfile.name);
-    setCurrentScenario(firstScenario);
     setFeedback(null);
+    setStatus(GameStatus.ONBOARDING);
+    
+    // Generate the first scenario dynamically based on background
+    await generateNextScenario(initialStatsWithCompany, []);
   };
 
   const handleChoice = async (choice: Choice) => {
@@ -250,7 +264,7 @@ export default function App() {
     else if (nextProgress >= 60) nextStage = '产品总监';
     else if (nextProgress >= 40) nextStage = '高级产品经理';
     else if (nextProgress >= 20) nextStage = '初级产品经理';
-    else nextStage = '实习生';
+    else nextStage = userProfile.background === '在校大学生' ? '实习生' : '初级产品经理';
 
     const newStats: GameStats = {
       productQuality: Math.max(0, Math.min(100, stats.productQuality + (choice.impact.productQuality || 0))),
@@ -268,7 +282,7 @@ export default function App() {
     setHistory(newHistory);
 
     // Check for game over
-    if (newStats.stress >= 100 || newStats.teamTrust <= 0 || newStats.productQuality <= 0) {
+    if (newStats.stress >= 100 || newStats.teamTrust <= 0 || newStats.productQuality <= 30) {
       setStatus(GameStatus.GAME_OVER);
       return;
     }
@@ -279,6 +293,62 @@ export default function App() {
     }
 
     await generateNextScenario(newStats, newHistory);
+  };
+
+  const handleDialogueSubmit = async () => {
+    if (!userInput.trim() || !currentScenario) return;
+    
+    setEvaluating(true);
+    try {
+      const prompt = `
+        你是一个产品经理职业模拟器的评价引擎。
+        
+        场景描述：${currentScenario.description}
+        玩家回复：${userInput}
+        
+        玩家背景：${userProfile.name}, ${userProfile.background}, ${userProfile.education}, ${userProfile.schoolTier}
+        当前职位：${stats.stage}
+        
+        请根据玩家的回复，评估其对职场属性的影响。
+        评估标准：
+        - 团队信任：回复是否得体、是否尊重他人、是否能解决冲突。
+        - 压力值：回复是否给自己揽了太多活、是否在推诿责任导致后续麻烦。
+        - 产品质量：回复是否专业、是否考虑了业务逻辑。
+        - 职业进度：回复是否展现了领导力、专业度或向上管理能力。
+        
+        请仅返回一个 JSON 对象：
+        {
+          "impact": { "productQuality": 数字(-15到15), "teamTrust": 数字(-15到15), "stress": 数字(-15到15), "careerProgress": 数字(-15到15) },
+          "feedback": "一段简短的评价，说明为什么你的回复产生了这些影响。"
+        }
+      `;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: prompt,
+        config: { responseMimeType: "application/json" }
+      });
+
+      const result = JSON.parse(response.text || '{}');
+      const choice: Choice = {
+        text: userInput,
+        impact: result.impact || {},
+        feedback: result.feedback || "面试官对你的回复不置可否。"
+      };
+      
+      setUserInput('');
+      await handleChoice(choice);
+    } catch (error) {
+      console.error("Failed to evaluate dialogue:", error);
+      // Fallback
+      await handleChoice({
+        text: userInput,
+        impact: { stress: 5 },
+        feedback: "回复已发出，但似乎没激起什么水花。"
+      });
+    } finally {
+      setEvaluating(false);
+    }
   };
 
   const StatCard = ({ icon: Icon, label, value, color, max = 100 }: any) => (
@@ -330,6 +400,134 @@ export default function App() {
         </header>
 
         <AnimatePresence mode="wait">
+          {status === GameStatus.ONBOARDING && (
+            <motion.div 
+              key="onboarding"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-xl max-w-2xl mx-auto"
+            >
+              <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-100">
+                <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white">
+                  <BookOpen size={24} />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">入职指南</h2>
+                  <p className="text-slate-500 text-sm">欢迎加入 {selectedCompany.name}，开启你的产品之旅</p>
+                </div>
+              </div>
+
+              <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar">
+                <section>
+                  <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800">
+                    <Target size={18} className="text-indigo-600" />
+                    一、核心目标
+                  </h3>
+                  <div className="space-y-2 text-sm text-slate-600 leading-relaxed">
+                    <p><span className="font-bold text-slate-800">持续进化：</span>作为产品经理，你的核心价值在于解决问题。通过不断学习和实践，从执行者成长为决策者。</p>
+                    <div className="bg-rose-50 p-4 rounded-xl border border-rose-100 mt-2">
+                      <p className="font-bold text-rose-700 mb-1">需要警惕的状态：</p>
+                      <ul className="list-disc list-inside space-y-1 text-rose-600">
+                        <li>身心俱疲：压力值满格 (≥ 100)</li>
+                        <li>孤军奋战：团队信任降至冰点 (≤ 0)</li>
+                        <li>口碑崩盘：产品质量跌破底线 (≤ 30)</li>
+                        <li>职业危机：做出极其不专业的决策</li>
+                      </ul>
+                    </div>
+                    <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 mt-2">
+                      <p className="font-bold text-emerald-700 mb-1">终极梦想：</p>
+                      <ul className="list-disc list-inside space-y-1 text-emerald-600">
+                        <li>登顶职场：最终晋升为 首席产品官 (CPO)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800">
+                    <Zap size={18} className="text-indigo-600" />
+                    二、关键资源
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                      <div className="font-bold text-slate-800 text-sm mb-1">产品质量</div>
+                      <p className="text-xs text-slate-500">你的勋章。好的产品会说话，它是你职场最好的名片。</p>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                      <div className="font-bold text-slate-800 text-sm mb-1">团队信任</div>
+                      <p className="text-xs text-slate-500">你的后盾。产品不是一个人做的，信任是团队的粘合剂。</p>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                      <div className="font-bold text-slate-800 text-sm mb-1">压力值</div>
+                      <p className="text-xs text-slate-500">你的晴雨表。适度压力是动力，过度则需要及时调节。</p>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                      <div className="font-bold text-slate-800 text-sm mb-1">职业进度</div>
+                      <p className="text-xs text-slate-500">你的足迹。每一步成长都算数，它是你晋升的阶梯。</p>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800">
+                    <Users size={18} className="text-indigo-600" />
+                    三、职场生存法则
+                  </h3>
+                  <ul className="space-y-3 text-sm text-slate-600">
+                    <li className="flex gap-2">
+                      <span className="text-indigo-600 font-bold">·</span>
+                      <span><span className="font-bold text-slate-800">尊重专业：</span>研发和设计是你的亲密战友，多听听他们的专业建议。</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-indigo-600 font-bold">·</span>
+                      <span><span className="font-bold text-slate-800">真诚沟通：</span>PM 的工作 80% 在于连接他人。真诚是最高级的套路。</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-indigo-600 font-bold">·</span>
+                      <span><span className="font-bold text-slate-800">权衡利弊：</span>没有完美的方案，只有在当前限制下的最优解。</span>
+                    </li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800">
+                    <TrendingUp size={18} className="text-indigo-600" />
+                    四、晋升路线
+                  </h3>
+                  <div className="flex items-center justify-between px-4 py-3 bg-indigo-50 rounded-xl border border-indigo-100 text-xs font-bold text-indigo-700">
+                    <span>实习/初级 PM</span>
+                    <ChevronRight size={14} />
+                    <span>高级 PM</span>
+                    <ChevronRight size={14} />
+                    <span>产品总监</span>
+                    <ChevronRight size={14} />
+                    <span>CPO</span>
+                  </div>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800">
+                    <Info size={18} className="text-indigo-600" />
+                    五、职场奇遇
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    在模拟过程中会触发各种抉择事件。包括：需求评审、上线事故、团队冲突、老板的突发奇想等。
+                    <span className="block mt-2 font-bold text-slate-800 italic">记住：职场没有标准答案，只有你的选择。</span>
+                  </p>
+                </section>
+              </div>
+
+              <button 
+                onClick={() => setStatus(GameStatus.PLAYING)}
+                className="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2"
+              >
+                我已了解，开始职业生涯
+                <ChevronRight size={20} />
+              </button>
+            </motion.div>
+          )}
+
           {status === GameStatus.START && (
             <motion.div 
               key="start"
@@ -343,9 +541,8 @@ export default function App() {
               </div>
               <h2 className="text-3xl font-bold mb-4">开启你的产品经理之路</h2>
               <p className="text-slate-600 mb-8 max-w-md mx-auto leading-relaxed">
-                你是一名对产品经理充满好奇的大学生。
-                在这个模拟器中，你将从一名实习生开始，面对真实的职场抉择。
-                你的目标：在不崩溃、不失去团队信任、不做出垃圾产品的前提下，晋升为 CPO。
+                在这个模拟器中，你将从一名职场新人开始，面对真实的职场抉择。
+                你的目标：在不崩溃、不失去团队信任、不做出垃圾产品的前提下，最终晋升为 CPO。
               </p>
               <button 
                 onClick={() => setStatus(GameStatus.SETUP)}
@@ -496,7 +693,13 @@ export default function App() {
                                   <Check size={32} />
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-800 mb-2">面试表现优异！</h3>
-                                <p className="text-sm text-slate-500 mb-6">你用实力证明了学历不是唯一的标准。</p>
+                                <p className="text-sm text-slate-500 mb-4">你用实力证明了学历不是唯一的标准。</p>
+                                <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-6">
+                                  <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-1">入职身份确认</div>
+                                  <div className="text-lg font-black text-indigo-700">
+                                    {userProfile.background === '在校大学生' ? '产品实习生' : '初级产品经理 (Junior PM)'}
+                                  </div>
+                                </div>
                                 <button 
                                   onClick={proceedToGame}
                                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-xl font-bold transition-all"
@@ -638,6 +841,8 @@ export default function App() {
                           const newProfile = { ...userProfile, background: bg };
                           if (bg === '在校大学生') {
                             newProfile.selectedCompanyId = 'campus-intern';
+                          } else if (userProfile.selectedCompanyId === 'campus-intern') {
+                            newProfile.selectedCompanyId = 'big-tech';
                           }
                           setUserProfile(newProfile);
                         }}
@@ -660,7 +865,7 @@ export default function App() {
                   <div className="space-y-3">
                     {COMPANY_TYPES.map((company) => {
                       const isStudent = userProfile.background === '在校大学生';
-                      const isDisabled = isStudent && company.id !== 'campus-intern';
+                      const isDisabled = (isStudent && company.id !== 'campus-intern') || (!isStudent && company.id === 'campus-intern');
                       
                       return (
                         <button
@@ -782,17 +987,54 @@ export default function App() {
                         {currentScenario.description}
                       </p>
 
-                      <div className="flex flex-col gap-3">
-                        {currentScenario.choices.map((choice, idx) => (
+                      <div className="flex flex-col gap-6">
+                        {/* Predefined Choices */}
+                        <div className="space-y-3">
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">快速决策</p>
+                          {currentScenario.choices.map((choice, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => handleChoice(choice)}
+                              disabled={loading || evaluating}
+                              className="w-full group text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <span className="text-slate-700 font-medium group-hover:text-indigo-700">{choice.text}</span>
+                              <ChevronRight size={18} className="text-slate-300 group-hover:text-indigo-400" />
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Custom Dialogue */}
+                        <div className="space-y-4 pt-4 border-t border-slate-100">
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">自定义回复 (高阶挑战)</p>
+                            <span className="text-[10px] bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full font-bold">AI 实时评估</span>
+                          </div>
+                          <textarea
+                            value={userInput}
+                            onChange={(e) => setUserInput(e.target.value)}
+                            placeholder="不想用预设选项？在这里输入你的真实想法..."
+                            disabled={evaluating || loading}
+                            className="w-full p-4 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all min-h-[100px] text-sm leading-relaxed"
+                          />
                           <button
-                            key={idx}
-                            onClick={() => handleChoice(choice)}
-                            className="group text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all flex items-center justify-between"
+                            onClick={handleDialogueSubmit}
+                            disabled={evaluating || loading || !userInput.trim()}
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-100"
                           >
-                            <span className="text-slate-700 font-medium group-hover:text-indigo-700">{choice.text}</span>
-                            <ChevronRight size={18} className="text-slate-300 group-hover:text-indigo-400" />
+                            {evaluating ? (
+                              <>
+                                <Loader2 size={18} className="animate-spin" />
+                                正在评估你的回复...
+                              </>
+                            ) : (
+                              <>
+                                发送自定义回复
+                                <Zap size={18} />
+                              </>
+                            )}
                           </button>
-                        ))}
+                        </div>
                       </div>
                     </motion.div>
                   )}
@@ -829,7 +1071,7 @@ export default function App() {
                     ? "你彻底崩溃了。身体是革命的本钱，或许产品经理并不适合你现在的状态。"
                     : stats.teamTrust <= 0 
                       ? "团队对你彻底失去了信任。没有开发的配合，你只是一个画饼的。你被解雇了。"
-                      : "产品质量太差，用户纷纷卸载。公司倒闭了，你也失业了。"
+                      : "产品质量跌破底线，口碑彻底崩盘。公司决定及时止损，你的职业生涯也在此告一段落。"
                 }
               </p>
 
@@ -857,7 +1099,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="mt-12 text-center text-slate-400 text-xs">
-          <p>© 2024 PM 职业模拟器 | 专为大学生设计的职业初体验</p>
+          <p>© 2024 PM 职业模拟器 | 专为职场新人设计的职业初体验</p>
         </footer>
       </div>
     </div>

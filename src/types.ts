@@ -2,6 +2,7 @@ export enum GameStatus {
   START = 'START',
   SETUP = 'SETUP',
   CHALLENGE = 'CHALLENGE',
+  ONBOARDING = 'ONBOARDING',
   PLAYING = 'PLAYING',
   GAME_OVER = 'GAME_OVER',
   WIN = 'WIN',

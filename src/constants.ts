@@ -55,14 +55,48 @@ export const INITIAL_SCENARIOS: Scenario[] = [
         feedback: '虽然听得云里雾里，但你认真的态度让领导觉得你很靠谱。'
       },
       {
-        text: '礼貌询问是否有相关的背景文档可以先快速浏览。',
+        text: '礼貌询问是否有相关的背景文档 (PRD) 可以先快速浏览。',
         impact: { careerProgress: 10, productQuality: 5 },
-        feedback: '领导愣了一下，随后赞许地看了你一眼，发给你一份50页的PRD。'
+        feedback: '领导愣了一下，随后赞许地看了你一眼，发给你一份50页的文档。'
       },
       {
         text: '表现出为难，表示自己还没配置好办公环境。',
         impact: { stress: -5, careerProgress: -10, teamTrust: -5 },
         feedback: '领导皱了皱眉：“那你先找IT吧。”第一印象分似乎打了个折扣。'
+      }
+    ]
+  },
+  {
+    id: 'f1',
+    title: '老员工的“下马威”',
+    description: '入职第一天，组里的资深开发老王把你拉到一个角落：“${name}，咱们这儿的规矩是需求得先过我这关，别动不动就拿老板压人。”',
+    choices: [
+      {
+        text: '虚心请教，表示以后多向王哥学习。',
+        impact: { teamTrust: 15, stress: 5, careerProgress: 5 },
+        feedback: '老王表示以后罩着你，但也意味着你可能要帮他背锅。'
+      },
+      {
+        text: '不卑不亢，表示一切按流程办事。',
+        impact: { teamTrust: -10, stress: 15, careerProgress: 5 },
+        feedback: '老王冷哼一声，接下来的几个需求他都以“技术实现不了”为由拒绝了。'
+      }
+    ]
+  },
+  {
+    id: 'f2',
+    title: '混乱的交接',
+    description: '前任 PM 已经离职一周了，留给你的是一份写了一半的 PRD 和一堆没处理的 Bug。老板催你下午就给出一个上线计划。',
+    choices: [
+      {
+        text: '中午不吃饭了，硬啃 PRD，先给出一个大概的时间点。',
+        impact: { productQuality: -10, stress: 25, careerProgress: 10 },
+        feedback: '老板觉得你效率很高，但开发们看到你的计划后都炸锅了。'
+      },
+      {
+        text: '找开发和测试开个短会，了解真实进度后再回复老板。',
+        impact: { teamTrust: 10, stress: 10, careerProgress: 5 },
+        feedback: '虽然回复晚了点，但计划更靠谱，团队压力也小一些。'
       }
     ]
   }

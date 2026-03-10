@@ -25,6 +25,7 @@ export interface UserProfile {
   education: string;
   schoolTier: string;
   selectedCompanyId: string;
+  gender: 'male' | 'female';
 }
 
 export interface GameStats {
@@ -34,6 +35,24 @@ export interface GameStats {
   careerProgress: number;
   tenureWeeks: number;
   stage: CareerStage;
+  leadershipRecognition: number;
+  colleagueLikability: number;
+}
+
+export interface FeedItem {
+  id: string;
+  type: 'choice' | 'social' | 'chat' | 'gossip';
+  content: string;
+  timestamp: number;
+  week: number;
+}
+
+export interface Milestone {
+  id: string;
+  title: string;
+  description: string;
+  target: string;
+  isCompleted: boolean;
 }
 
 export interface Choice {

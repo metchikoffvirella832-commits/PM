@@ -1,4 +1,4 @@
-import { Scenario, GameStats, CompanyType } from './types';
+import { Scenario, GameStats, CompanyType, Milestone } from './types';
 
 export const COMPANY_TYPES: CompanyType[] = [
   {
@@ -6,7 +6,7 @@ export const COMPANY_TYPES: CompanyType[] = [
     name: '互联网大厂 (如：鹅厂、猪厂)',
     description: '流程规范，资源丰富，但内部竞争激烈，会议繁多。适合想学习标准流程的同学。',
     cultureTrait: 'OKR导向、赛马机制、跨部门对齐、PPT文化',
-    initialStats: { productQuality: 60, teamTrust: 40, stress: 30, careerProgress: 10 },
+    initialStats: { productQuality: 60, teamTrust: 40, stress: 30, careerProgress: 10, leadershipRecognition: 30, colleagueLikability: 30 },
     difficulty: '普通'
   },
   {
@@ -14,7 +14,7 @@ export const COMPANY_TYPES: CompanyType[] = [
     name: '初创公司 (A轮/B轮)',
     description: '节奏极快，一个人当三个人用。虽然混乱，但你能参与从0到1的每一个环节。',
     cultureTrait: '快速迭代、全能战士、生存压力、扁平化',
-    initialStats: { productQuality: 30, teamTrust: 60, stress: 50, careerProgress: 20 },
+    initialStats: { productQuality: 30, teamTrust: 60, stress: 50, careerProgress: 20, leadershipRecognition: 50, colleagueLikability: 50 },
     difficulty: '困难'
   },
   {
@@ -22,7 +22,7 @@ export const COMPANY_TYPES: CompanyType[] = [
     name: '传统行业数字化部门',
     description: '节奏较慢，但需要面对复杂的线下业务和对互联网不甚了解的同事。',
     cultureTrait: '业务驱动、线下逻辑、沟通成本高、数字化转型',
-    initialStats: { productQuality: 40, teamTrust: 30, stress: 10, careerProgress: 5 },
+    initialStats: { productQuality: 40, teamTrust: 30, stress: 10, careerProgress: 5, leadershipRecognition: 20, colleagueLikability: 40 },
     difficulty: '简单'
   },
   {
@@ -30,7 +30,7 @@ export const COMPANY_TYPES: CompanyType[] = [
     name: '外包/项目制公司',
     description: '同时处理多个客户需求，锻炼极强的沟通和交付能力，但很难对产品有深度思考。',
     cultureTrait: '交付至上、客户是上帝、多线程操作、成本控制',
-    initialStats: { productQuality: 20, teamTrust: 40, stress: 40, careerProgress: 15 },
+    initialStats: { productQuality: 20, teamTrust: 40, stress: 40, careerProgress: 15, leadershipRecognition: 40, colleagueLikability: 30 },
     difficulty: '普通'
   },
   {
@@ -38,7 +38,7 @@ export const COMPANY_TYPES: CompanyType[] = [
     name: '校园项目/暑期实习',
     description: '在校期间的职场初体验。需要平衡学业与工作，面对转正压力，同时处理导师布置的各种“杂活”。',
     cultureTrait: '学业平衡、导师带教、转正挑战、为爱发电',
-    initialStats: { productQuality: 30, teamTrust: 50, stress: 15, careerProgress: 0 },
+    initialStats: { productQuality: 30, teamTrust: 50, stress: 15, careerProgress: 0, leadershipRecognition: 10, colleagueLikability: 60 },
     difficulty: '简单'
   }
 ];
@@ -109,4 +109,37 @@ export const INITIAL_STATS: GameStats = {
   careerProgress: 0,
   tenureWeeks: 0,
   stage: '实习生',
+  leadershipRecognition: 30,
+  colleagueLikability: 50,
 };
+
+export const MILESTONES: Milestone[] = [
+  {
+    id: 'probation',
+    title: '顺利转正',
+    description: '作为新人，首要任务是适应环境并证明你的基础能力。',
+    target: '职业进度 > 20 且 团队信任 > 40',
+    isCompleted: false
+  },
+  {
+    id: 'recognition',
+    title: '获得认可',
+    description: '在团队中建立口碑，让领导看到你的潜力。',
+    target: '领导认可度 > 50 且 产品质量 > 50',
+    isCompleted: false
+  },
+  {
+    id: 'promotion',
+    title: '职场晋升',
+    description: '通过出色的业绩，争取更高的职位和薪资。',
+    target: '职业进度 > 60 且 领导认可度 > 70',
+    isCompleted: false
+  },
+  {
+    id: 'cpo',
+    title: '登顶巅峰',
+    description: '成为公司的核心决策者，引领产品方向。',
+    target: '职业进度 > 90',
+    isCompleted: false
+  }
+];

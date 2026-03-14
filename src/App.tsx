@@ -8,6 +8,7 @@ import {
   Calendar, 
   AlertCircle, 
   ChevronRight, 
+  ArrowRight,
   RefreshCcw,
   Trophy,
   Skull,
@@ -828,26 +829,39 @@ export default function App() {
           {status === GameStatus.START && (
             <motion.div 
               key="start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-xl text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              className="glass-panel p-8 md:p-16 rounded-[2.5rem] text-center relative overflow-hidden"
             >
-              <div className="w-20 h-20 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <TrendingUp size={40} className="text-indigo-600" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-50" />
+              
+              <div className="w-24 h-24 bg-emerald-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                <TrendingUp size={48} className="text-emerald-500" />
               </div>
-              <h2 className="text-3xl font-bold mb-4">开启你的产品经理之路</h2>
-              <p className="text-slate-600 mb-8 max-w-md mx-auto leading-relaxed">
+              
+              <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter text-white">
+                开启你的<span className="text-emerald-500">产品经理</span>之路
+              </h2>
+              
+              <p className="text-slate-400 mb-12 max-w-xl mx-auto leading-relaxed text-lg">
                 在这个模拟器中，你将从一名职场新人开始，面对真实的职场抉择。
-                你的目标：在不崩溃、不失去团队信任、不做出垃圾产品的前提下，最终晋升为 CPO。
+                你的目标：在不崩溃、不失去团队信任、不做出垃圾产品的前提下，最终晋升为 <span className="text-white font-bold">CPO</span>。
               </p>
+              
               <button 
                 onClick={() => setStatus(GameStatus.SETUP)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-indigo-200 flex items-center gap-2 mx-auto"
+                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-10 py-5 rounded-2xl font-black text-lg transition-all shadow-[0_0_40px_rgba(16,185,129,0.3)] flex items-center gap-3 mx-auto group"
               >
-                开始职业生涯
-                <ChevronRight size={20} />
+                INITIALIZE CAREER
+                <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
               </button>
+              
+              <div className="mt-12 flex items-center justify-center gap-8 opacity-30 grayscale">
+                <div className="flex items-center gap-2 text-xs font-mono"><Zap size={14}/> REAL-TIME ENGINE</div>
+                <div className="flex items-center gap-2 text-xs font-mono"><Users size={14}/> SOCIAL DYNAMICS</div>
+                <div className="flex items-center gap-2 text-xs font-mono"><Briefcase size={14}/> CAREER PATHING</div>
+              </div>
             </motion.div>
           )}
 
@@ -857,63 +871,72 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-xl text-center"
+              className="glass-panel p-10 md:p-16 rounded-[3rem] border border-white/10 text-center max-w-2xl mx-auto relative overflow-hidden"
             >
-              <h2 className="text-2xl font-bold mb-2">简历筛选与面试中...</h2>
-              <p className="text-slate-500 mb-8">目标公司：{selectedCompany.name}</p>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+              
+              <h2 className="text-3xl font-black mb-2 tracking-tight text-white">RECRUITMENT_PROTOCOL_ACTIVE</h2>
+              <p className="text-emerald-500/60 font-black uppercase tracking-[0.2em] text-xs mb-10">Target_Entity: {selectedCompany.name}</p>
 
-              <div className="relative w-48 h-48 mx-auto mb-8">
+              <div className="relative w-56 h-56 mx-auto mb-12">
                 {/* Circular Progress for Probability */}
                 <svg className="w-full h-full transform -rotate-90">
                   <circle
-                    cx="96"
-                    cy="96"
-                    r="88"
+                    cx="112"
+                    cy="112"
+                    r="100"
                     stroke="currentColor"
-                    strokeWidth="12"
+                    strokeWidth="16"
                     fill="transparent"
-                    className="text-slate-100"
+                    className="text-white/5"
                   />
                   <motion.circle
-                    cx="96"
-                    cy="96"
-                    r="88"
+                    cx="112"
+                    cy="112"
+                    r="100"
                     stroke="currentColor"
-                    strokeWidth="12"
+                    strokeWidth="16"
                     fill="transparent"
-                    strokeDasharray={552.92}
-                    initial={{ strokeDashoffset: 552.92 }}
-                    animate={{ strokeDashoffset: 552.92 - (552.92 * challengeResult.probability) / 100 }}
+                    strokeDasharray={628.32}
+                    initial={{ strokeDashoffset: 628.32 }}
+                    animate={{ strokeDashoffset: 628.32 - (628.32 * challengeResult.probability) / 100 }}
                     transition={{ duration: 2, ease: "easeOut" }}
-                    className="text-indigo-600"
+                    className="text-emerald-500"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-black text-slate-800">{challengeResult.probability}%</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">录取概率</span>
+                  <span className="text-5xl font-black text-white font-mono">{challengeResult.probability}%</span>
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mt-1">Success_Rate</span>
                 </div>
+                <div className="absolute inset-0 blur-2xl bg-emerald-500/10 rounded-full -z-10" />
               </div>
 
-              <div className="max-w-sm mx-auto mb-8 space-y-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">简历匹配度</span>
+              <div className="max-w-sm mx-auto mb-12 space-y-6">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    <span>Resume_Sync_Quality</span>
+                    <span className="text-emerald-500">70%</span>
+                  </div>
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: "70%" }}
-                    className="h-1.5 bg-indigo-100 rounded-full w-32 overflow-hidden"
+                    className="h-1.5 bg-white/5 rounded-full w-full overflow-hidden border border-white/5"
                   >
-                    <div className="h-full bg-indigo-500 w-full" />
+                    <div className="h-full bg-emerald-500 w-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                   </motion.div>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">面试表现 (模拟)</span>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    <span>Interview_Simulation_Score</span>
+                    <span className="text-emerald-500">85%</span>
+                  </div>
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: "85%" }}
                     transition={{ delay: 0.5 }}
-                    className="h-1.5 bg-indigo-100 rounded-full w-32 overflow-hidden"
+                    className="h-1.5 bg-white/5 rounded-full w-full overflow-hidden border border-white/5"
                   >
-                    <div className="h-full bg-indigo-500 w-full" />
+                    <div className="h-full bg-emerald-500 w-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                   </motion.div>
                 </div>
               </div>
@@ -924,10 +947,11 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                 >
                   {!showMiniGame ? (
-                    <div className="space-y-6">
-                      <div className="bg-indigo-50 text-indigo-700 p-6 rounded-2xl border border-indigo-100">
-                        <h3 className="font-bold mb-2">简历筛选已通过，进入面试环节！</h3>
-                        <p className="text-xs text-slate-500 leading-relaxed">
+                    <div className="space-y-8">
+                      <div className="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-md relative group overflow-hidden">
+                        <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <h3 className="font-black text-white mb-3 uppercase tracking-wider">Phase_02: Technical_Evaluation</h3>
+                        <p className="text-xs text-slate-400 leading-relaxed font-medium">
                           {userProfile.gender === 'female' 
                             ? "面试官想考察你的逻辑与记忆。请在规定时间内完成‘连连看’挑战，匹配所有相同图标。" 
                             : "面试官想考察你的应变与执行。请操控‘坦克’击毁所有入侵的系统Bug。"}
@@ -935,45 +959,45 @@ export default function App() {
                       </div>
                       <button 
                         onClick={startInterviewGame}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-indigo-100 flex items-center justify-center gap-2"
+                        className="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-5 rounded-2xl font-black transition-all shadow-[0_0_30px_rgba(16,185,129,0.2)] flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-sm"
                       >
-                        开始面试挑战
-                        <Zap size={18} />
+                        Initiate_Challenge
+                        <Zap size={20} />
                       </button>
                     </div>
                   ) : (
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                       <div className="flex items-center justify-between mb-2">
-                        <div className="text-xs font-bold text-slate-400 uppercase">面试表现进度</div>
-                        <div className="text-xs font-bold text-indigo-600">目标: {Math.ceil((100 - challengeResult.probability) / 5) + 5} 分</div>
+                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Evaluation_Progress</div>
+                        <div className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.2em]">Target: {Math.ceil((100 - challengeResult.probability) / 5) + 5} PTS</div>
                       </div>
                       
-                      <div className="relative w-full h-64 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 overflow-hidden cursor-crosshair">
+                      <div className="relative w-full h-80 bg-black/40 rounded-3xl border border-white/10 overflow-hidden cursor-crosshair backdrop-blur-xl">
                         {gameActive ? (
                           <>
-                            <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
-                              <div className="px-2 py-1 bg-white rounded-md border border-slate-200 text-[10px] font-bold">
-                                得分: {gameScore}
+                            <div className="absolute top-4 left-4 flex items-center gap-3 z-10">
+                              <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[10px] font-black text-white uppercase tracking-widest">
+                                SCORE: {gameScore}
                               </div>
                               <div className={cn(
-                                "px-2 py-1 rounded-md border text-[10px] font-bold",
-                                gameTimer < 5 ? "bg-rose-50 border-rose-200 text-rose-600 animate-pulse" : "bg-white border-slate-200 text-slate-600"
+                                "px-3 py-1.5 rounded-lg border text-[10px] font-black uppercase tracking-widest",
+                                gameTimer < 5 ? "bg-rose-500/20 border-rose-500/50 text-rose-500 animate-pulse" : "bg-white/5 border-white/10 text-slate-400"
                               )}>
-                                时间: {gameTimer.toFixed(1)}s
+                                TIME: {gameTimer.toFixed(1)}S
                               </div>
                             </div>
                             
                             {userProfile.gender === 'female' ? (
-                              <div className="grid grid-cols-4 gap-2 p-4 h-full">
+                              <div className="grid grid-cols-4 gap-3 p-6 h-full">
                                 {linkupGrid.map((tile, i) => (
                                   <motion.button
                                     key={tile.id}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => handleLinkupClick(i)}
                                     className={cn(
-                                      "aspect-square rounded-xl flex items-center justify-center text-2xl transition-all",
-                                      tile.cleared ? "bg-emerald-50 opacity-0 pointer-events-none" : 
-                                      selectedIndices.includes(i) ? "bg-pink-100 border-2 border-pink-400 shadow-inner scale-110 z-10" : "bg-white border border-slate-200 shadow-sm hover:border-pink-200"
+                                      "aspect-square rounded-2xl flex items-center justify-center text-3xl transition-all relative overflow-hidden",
+                                      tile.cleared ? "opacity-0 pointer-events-none" : 
+                                      selectedIndices.includes(i) ? "bg-emerald-500/20 border-2 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)] scale-110 z-10" : "bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-white/10"
                                     )}
                                   >
                                     {tile.cleared ? '' : tile.type}
@@ -981,11 +1005,12 @@ export default function App() {
                                 ))}
                               </div>
                             ) : (
-                              <div className="relative w-full h-full bg-slate-900 overflow-hidden">
+                              <div className="relative w-full h-full bg-[#050505] overflow-hidden">
+                                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)', backgroundSize: '24px 24px' }} />
                                 {/* Tank */}
                                 <motion.div 
                                   animate={{ left: `${tankX}%` }}
-                                  className="absolute bottom-4 -translate-x-1/2 text-3xl"
+                                  className="absolute bottom-6 -translate-x-1/2 text-4xl drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                                 >
                                   🚜
                                 </motion.div>
@@ -995,7 +1020,7 @@ export default function App() {
                                   <div 
                                     key={b.id}
                                     style={{ left: `${b.x}%`, top: `${b.y}%` }}
-                                    className="absolute w-1.5 h-4 bg-yellow-400 rounded-full shadow-[0_0_8px_rgba(250,204,21,0.6)]"
+                                    className="absolute w-1.5 h-5 bg-emerald-400 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.8)]"
                                   />
                                 ))}
                                 
@@ -1004,45 +1029,45 @@ export default function App() {
                                   <div 
                                     key={e.id}
                                     style={{ left: `${e.x}%`, top: `${e.y}%` }}
-                                    className="absolute -translate-x-1/2 -translate-y-1/2 text-2xl"
+                                    className="absolute -translate-x-1/2 -translate-y-1/2 text-3xl drop-shadow-[0_0_10px_rgba(244,63,94,0.5)]"
                                   >
                                     👾
                                   </div>
                                 ))}
 
                                 {/* Mobile Controls */}
-                                <div className="absolute bottom-2 right-2 flex gap-2">
-                                  <button onClick={() => handleTankMove('left')} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white border border-white/20">⬅️</button>
-                                  <button onClick={() => handleTankMove('right')} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white border border-white/20">➡️</button>
-                                  <button onClick={handleTankShoot} className="w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center text-white shadow-lg">🔥</button>
+                                <div className="absolute bottom-4 right-4 flex gap-3">
+                                  <button onClick={() => handleTankMove('left')} className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-white border border-white/10 backdrop-blur-md active:bg-white/20 transition-colors">⬅️</button>
+                                  <button onClick={() => handleTankMove('right')} className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-white border border-white/10 backdrop-blur-md active:bg-white/20 transition-colors">➡️</button>
+                                  <button onClick={handleTankShoot} className="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-black shadow-[0_0_20px_rgba(16,185,129,0.4)] active:scale-90 transition-transform">🔥</button>
                                 </div>
                               </div>
                             )}
                           </>
                         ) : (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+                          <div className="absolute inset-0 flex flex-col items-center justify-center p-10">
                             {challengeResult.success ? (
                               <motion.div 
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="text-center"
                               >
-                                <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white mx-auto mb-4">
-                                  <Check size={32} />
+                                <div className="w-20 h-20 bg-emerald-500 rounded-3xl flex items-center justify-center text-black mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                                  <Check size={40} strokeWidth={3} />
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-2">面试表现优异！</h3>
-                                <p className="text-sm text-slate-500 mb-4">你用实力证明了学历不是唯一的标准。</p>
-                                <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-6">
-                                  <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-1">入职身份确认</div>
-                                  <div className="text-lg font-black text-indigo-700">
+                                <h3 className="text-2xl font-black text-white mb-3 tracking-tight">EVALUATION_SUCCESS</h3>
+                                <p className="text-sm text-slate-400 mb-8 font-medium">你用实力证明了学历不是唯一的标准。</p>
+                                <div className="bg-emerald-500/10 p-6 rounded-3xl border border-emerald-500/20 mb-10 backdrop-blur-md">
+                                  <div className="text-[10px] font-black text-emerald-500/60 uppercase tracking-[0.3em] mb-2">Designated_Role</div>
+                                  <div className="text-xl font-black text-emerald-500 tracking-tight">
                                     {userProfile.background === '在校大学生' ? '产品实习生' : '初级产品经理 (Junior PM)'}
                                   </div>
                                 </div>
                                 <button 
                                   onClick={proceedToGame}
-                                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-xl font-bold transition-all"
+                                  className="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-4 px-10 rounded-2xl font-black transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)] uppercase tracking-widest text-xs"
                                 >
-                                  正式入职
+                                  Finalize_Onboarding
                                 </button>
                               </motion.div>
                             ) : (
@@ -1051,32 +1076,35 @@ export default function App() {
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="text-center"
                               >
-                                <div className="w-16 h-16 bg-rose-500 rounded-full flex items-center justify-center text-white mx-auto mb-4">
-                                  <X size={32} />
+                                <div className="w-20 h-20 bg-rose-500 rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-[0_0_30px_rgba(244,63,94,0.4)]">
+                                  <X size={40} strokeWidth={3} />
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-2">面试未通过</h3>
-                                <p className="text-sm text-slate-500 mb-6">面试官认为你的反应速度和产品直觉仍需磨练。</p>
+                                <h3 className="text-2xl font-black text-white mb-3 tracking-tight">EVALUATION_FAILED</h3>
+                                <p className="text-sm text-slate-400 mb-10 font-medium">面试官认为你的反应速度和产品直觉仍需磨练。</p>
                                 <button 
                                   onClick={proceedToGame}
-                                  className="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 px-8 rounded-xl font-bold transition-all"
+                                  className="w-full bg-white/5 hover:bg-white/10 text-white py-4 px-10 rounded-2xl font-black transition-all border border-white/10 uppercase tracking-widest text-xs"
                                 >
-                                  返回修改简历
+                                  Return_To_Simulation_Setup
                                 </button>
                               </motion.div>
                             )}
                           </div>
                         )}
                       </div>
-                      <p className="text-[10px] text-slate-400 italic">
-                        * 提示：{userProfile.gender === 'female' ? "点击两个相同的图标进行消除。" : "使用 A/D 或 左右方向键移动，空格键射击。"}
+                      <p className="text-[10px] text-slate-600 italic font-mono tracking-wider">
+                        // HINT: {userProfile.gender === 'female' ? "点击两个相同的图标进行消除。" : "使用 A/D 或 左右方向键移动，空格键射击。"}
                       </p>
                     </div>
                   )}
                 </motion.div>
               ) : (
-                <div className="flex items-center justify-center gap-2 text-indigo-600 font-bold animate-pulse">
-                  <Loader2 className="animate-spin" size={20} />
-                  <span>正在同步面试结果...</span>
+                <div className="flex flex-col items-center justify-center gap-6 py-10">
+                  <div className="relative">
+                    <Loader2 className="animate-spin text-emerald-500" size={48} />
+                    <div className="absolute inset-0 blur-xl bg-emerald-500/20 animate-pulse" />
+                  </div>
+                  <span className="text-emerald-500/60 font-black tracking-[0.3em] uppercase text-xs animate-pulse">Processing_Interview_Results...</span>
                 </div>
               )}
             </motion.div>
@@ -1088,58 +1116,69 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white p-8 md:p-10 rounded-3xl border border-slate-200 shadow-xl"
+              className="glass-panel p-10 md:p-12 rounded-[3rem] border border-white/10 max-w-4xl mx-auto relative overflow-hidden"
             >
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <User className="text-indigo-600" />
-                入职选择
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+              
+              <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-white uppercase tracking-tight">
+                <User className="text-emerald-500" size={32} />
+                Profile_Initialization
               </h2>
               
-              <div className="space-y-6">
+              <div className="space-y-10">
                 {/* Name Input */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">你的名字</label>
-                    <input 
-                      type="text" 
-                      value={userProfile.name}
-                      onChange={(e) => setUserProfile({...userProfile, name: e.target.value})}
-                      placeholder="例如：张三"
-                      className="w-full p-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-3">
+                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Subject_Designation</label>
+                    <div className="relative group">
+                      <input 
+                        type="text" 
+                        value={userProfile.name}
+                        onChange={(e) => setUserProfile({...userProfile, name: e.target.value})}
+                        placeholder="ENTER_NAME..."
+                        className="w-full bg-white/5 p-4 rounded-2xl border border-white/10 focus:border-emerald-500/50 focus:bg-white/10 outline-none transition-all text-white font-mono placeholder:text-slate-700"
+                      />
+                      <div className="absolute inset-0 rounded-2xl bg-emerald-500/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity blur-xl" />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">性别</label>
-                    <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-3">
+                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Biological_Marker</label>
+                    <div className="grid grid-cols-2 gap-4">
                       <button 
                         onClick={() => setUserProfile({ ...userProfile, gender: 'male' })}
                         className={cn(
-                          "p-3 rounded-xl border transition-all flex items-center justify-center gap-2",
-                          userProfile.gender === 'male' ? "border-indigo-600 bg-indigo-50 text-indigo-700" : "border-slate-200 text-slate-600"
+                          "p-4 rounded-2xl border transition-all flex items-center justify-center gap-3 group relative overflow-hidden",
+                          userProfile.gender === 'male' 
+                            ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.1)]" 
+                            : "border-white/5 bg-white/5 text-slate-500 hover:border-white/20"
                         )}
                       >
-                        <span>👨‍💼</span>
-                        <span className="text-xs font-bold">男士</span>
+                        <span className="text-xl">👨‍💼</span>
+                        <span className="text-xs font-black uppercase tracking-widest">MALE</span>
+                        {userProfile.gender === 'male' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-500" />}
                       </button>
                       <button 
                         onClick={() => setUserProfile({ ...userProfile, gender: 'female' })}
                         className={cn(
-                          "p-3 rounded-xl border transition-all flex items-center justify-center gap-2",
-                          userProfile.gender === 'female' ? "border-indigo-600 bg-indigo-50 text-indigo-700" : "border-slate-200 text-slate-600"
+                          "p-4 rounded-2xl border transition-all flex items-center justify-center gap-3 group relative overflow-hidden",
+                          userProfile.gender === 'female' 
+                            ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.1)]" 
+                            : "border-white/5 bg-white/5 text-slate-500 hover:border-white/20"
                         )}
                       >
-                        <span>👩‍💼</span>
-                        <span className="text-xs font-bold">女士</span>
+                        <span className="text-xl">👩‍💼</span>
+                        <span className="text-xs font-black uppercase tracking-widest">FEMALE</span>
+                        {userProfile.gender === 'female' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-500" />}
                       </button>
                     </div>
                   </div>
                 </div>
 
                 {/* Education Selection */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">学位</label>
-                    <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-4">
+                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Academic_Tier</label>
+                    <div className="flex flex-wrap gap-3">
                       {['专科', '本科', '硕士', '博士', '海外留学生'].map((edu) => (
                         <button
                           key={edu}
@@ -1151,10 +1190,10 @@ export default function App() {
                             setUserProfile(newProfile);
                           }}
                           className={cn(
-                            "px-4 py-2 rounded-lg border text-xs font-medium transition-all",
+                            "px-5 py-2.5 rounded-xl border text-[10px] font-black transition-all uppercase tracking-widest",
                             userProfile.education === edu 
-                              ? "border-indigo-600 bg-indigo-50 text-indigo-700" 
-                              : "border-slate-200 hover:border-slate-300 text-slate-600"
+                              ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.1)]" 
+                              : "border-white/5 bg-white/5 text-slate-500 hover:border-white/20"
                           )}
                         >
                           {edu}
@@ -1163,9 +1202,9 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">学校</label>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="space-y-4">
+                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Institution_Rating</label>
+                    <div className="flex flex-wrap gap-3">
                       {['C9/985', '211', '普通本科', '专科院校', '全球顶尖 (QS前50)'].map((tier) => {
                         const isJuniorCollege = userProfile.education === '专科';
                         const isDegreeHolder = ['本科', '硕士', '博士', '海外留学生'].includes(userProfile.education);
@@ -1180,11 +1219,11 @@ export default function App() {
                             disabled={isDisabled}
                             onClick={() => setUserProfile({...userProfile, schoolTier: tier})}
                             className={cn(
-                              "px-4 py-2 rounded-lg border text-xs font-medium transition-all",
+                              "px-5 py-2.5 rounded-xl border text-[10px] font-black transition-all uppercase tracking-widest",
                               userProfile.schoolTier === tier 
-                                ? "border-indigo-600 bg-indigo-50 text-indigo-700" 
-                                : "border-slate-200 hover:border-slate-300 text-slate-600",
-                              isDisabled && "opacity-30 cursor-not-allowed grayscale"
+                                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.1)]" 
+                                : "border-white/5 bg-white/5 text-slate-500 hover:border-white/20",
+                              isDisabled && "opacity-10 cursor-not-allowed grayscale"
                             )}
                           >
                             {tier}
@@ -1196,9 +1235,9 @@ export default function App() {
                 </div>
 
                 {/* Background Selection */}
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">你的背景</label>
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-4">
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Experience_Matrix</label>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                     {['在校大学生', '应届毕业生', '转行小白', '技术转产品', '创业失败者'].map((bg) => (
                       <button
                         key={bg}
@@ -1212,10 +1251,10 @@ export default function App() {
                           setUserProfile(newProfile);
                         }}
                         className={cn(
-                          "p-3 rounded-xl border text-sm font-medium transition-all",
+                          "p-4 rounded-2xl border text-[10px] font-black transition-all uppercase tracking-widest text-center",
                           userProfile.background === bg 
-                            ? "border-indigo-600 bg-indigo-50 text-indigo-700" 
-                            : "border-slate-200 hover:border-slate-300 text-slate-600"
+                            ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.1)]" 
+                            : "border-white/5 bg-white/5 text-slate-500 hover:border-white/20"
                         )}
                       >
                         {bg}
@@ -1225,9 +1264,9 @@ export default function App() {
                 </div>
 
                 {/* Company Selection */}
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">选择入职公司</label>
-                  <div className="space-y-3">
+                <div className="space-y-4">
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Target_Corporation</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {COMPANY_TYPES.map((company) => {
                       const isStudent = userProfile.background === '在校大学生';
                       const isDisabled = (isStudent && company.id !== 'campus-intern') || (!isStudent && company.id === 'campus-intern');
@@ -1238,64 +1277,61 @@ export default function App() {
                           disabled={isDisabled}
                           onClick={() => setUserProfile({...userProfile, selectedCompanyId: company.id})}
                           className={cn(
-                            "w-full p-4 rounded-xl border text-left transition-all flex items-start gap-4",
+                            "w-full p-6 rounded-[2rem] border text-left transition-all flex items-start gap-5 relative group overflow-hidden",
                             userProfile.selectedCompanyId === company.id 
-                              ? "border-indigo-600 bg-indigo-50" 
-                              : "border-slate-200 hover:border-slate-300",
-                            isDisabled && "opacity-50 grayscale cursor-not-allowed border-slate-100"
+                              ? "border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_30px_rgba(16,185,129,0.1)]" 
+                              : "border-white/5 bg-white/5 hover:border-white/20",
+                            isDisabled && "opacity-20 grayscale cursor-not-allowed"
                           )}
                         >
                           <div className={cn(
-                            "p-2 rounded-lg",
-                            userProfile.selectedCompanyId === company.id ? "bg-indigo-100" : "bg-slate-100"
+                            "p-3 rounded-2xl transition-colors",
+                            userProfile.selectedCompanyId === company.id ? "bg-emerald-500 text-black" : "bg-white/5 text-slate-500"
                           )}>
-                            <Building2 size={20} className={userProfile.selectedCompanyId === company.id ? "text-indigo-600" : "text-slate-500"} />
+                            <Building2 size={24} />
                           </div>
                           <div className="flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className={cn("font-bold", userProfile.selectedCompanyId === company.id ? "text-indigo-900" : "text-slate-800")}>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={cn("font-black tracking-tight uppercase text-sm", userProfile.selectedCompanyId === company.id ? "text-white" : "text-slate-400")}>
                                 {company.name}
                               </span>
                               <div className="flex items-center gap-2">
                                 {isDisabled && (
-                                  <span className="text-[10px] text-rose-500 font-bold">仅限毕业生/职场人</span>
+                                  <span className="text-[8px] text-rose-500 font-black uppercase tracking-widest">RESTRICTED</span>
                                 )}
                                 <span className={cn(
-                                  "text-[10px] px-2 py-0.5 rounded-full font-bold uppercase",
-                                  company.difficulty === '简单' ? "bg-emerald-100 text-emerald-700" :
-                                  company.difficulty === '普通' ? "bg-blue-100 text-blue-700" : "bg-rose-100 text-rose-700"
+                                  "text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest border",
+                                  company.difficulty === '简单' ? "border-emerald-500/30 text-emerald-500" :
+                                  company.difficulty === '普通' ? "border-blue-500/30 text-blue-500" : "border-rose-500/30 text-rose-500"
                                 )}>
                                   {company.difficulty}
                                 </span>
                               </div>
                             </div>
-                            <p className="text-xs text-slate-500 leading-relaxed">{company.description}</p>
+                            <p className="text-[10px] text-slate-500 leading-relaxed font-medium">{company.description}</p>
                           </div>
+                          {userProfile.selectedCompanyId === company.id && (
+                            <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/10 blur-2xl rounded-full" />
+                          )}
                         </button>
                       );
                     })}
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-400 text-xs">
-                  <Info size={14} />
-                  <span>选择将影响你的初始属性</span>
-                </div>
-                <button 
-                  disabled={!userProfile.name}
-                  onClick={startGame}
-                  className={cn(
-                    "px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2",
-                    userProfile.name 
-                      ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-100" 
-                      : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                <div className="pt-6">
+                  <button 
+                    onClick={startGame}
+                    disabled={!userProfile.name}
+                    className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-800 disabled:text-slate-600 text-black py-5 rounded-2xl font-black transition-all shadow-[0_0_40px_rgba(16,185,129,0.2)] flex items-center justify-center gap-3 uppercase tracking-[0.3em] text-sm"
+                  >
+                    Initialize_Career_Simulation
+                    <ArrowRight size={20} />
+                  </button>
+                  {!userProfile.name && (
+                    <p className="text-center text-[10px] text-rose-500 mt-4 font-black uppercase tracking-widest animate-pulse">Error: Subject_Designation_Required</p>
                   )}
-                >
-                  正式入职
-                  <ChevronRight size={18} />
-                </button>
+                </div>
               </div>
             </motion.div>
           )}
@@ -1305,32 +1341,29 @@ export default function App() {
               key="playing"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col h-[85vh]"
+              className="glass-panel rounded-[2.5rem] overflow-hidden flex flex-col h-[85vh] relative"
             >
               {/* Window Title Bar */}
-              <div className="bg-slate-900 px-6 py-3 flex items-center justify-between text-white">
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-rose-500" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500" />
+              <div className="bg-white/5 px-6 py-4 flex items-center justify-between border-b border-white/10">
+                <div className="flex items-center gap-4">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-rose-500/50" />
+                    <div className="w-3 h-3 rounded-full bg-amber-500/50" />
+                    <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
                   </div>
-                  <div className="h-4 w-px bg-slate-700 mx-2" />
-                  <span className="text-xs font-bold tracking-widest uppercase opacity-70">PM Workplace v1.0</span>
+                  <div className="h-4 w-px bg-white/10 mx-2" />
+                  <span className="text-[10px] font-black tracking-[0.2em] uppercase text-emerald-500/60">SIMULATION_ACTIVE // {selectedCompany.name}</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 bg-slate-800 px-3 py-1 rounded-lg border border-slate-700">
-                    <Calendar size={12} className="text-slate-400" />
-                    <span className="text-[10px] font-bold">WEEK {stats.tenureWeeks}</span>
-                  </div>
-                  <div className="text-[10px] font-bold text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded border border-indigo-500/20">
-                    {stats.stage}
+                  <div className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1.5 rounded-lg border border-emerald-500/20">
+                    <Calendar size={12} className="text-emerald-500" />
+                    <span className="text-[10px] font-black text-emerald-500">WEEK {stats.tenureWeeks}</span>
                   </div>
                 </div>
               </div>
 
               {/* Navigation Tabs */}
-              <div className="flex border-b border-slate-100 bg-slate-50/50">
+              <div className="flex bg-white/2 border-b border-white/5">
                 {[
                   { id: 'home', label: '工作主页', icon: Home },
                   { id: 'resume', label: '我的简历', icon: FileText },
@@ -1340,18 +1373,18 @@ export default function App() {
                     key={tab.id}
                     onClick={() => setCurrentTab(tab.id as any)}
                     className={cn(
-                      "flex items-center gap-2 px-8 py-4 text-sm font-bold transition-all relative",
+                      "flex items-center gap-2 px-10 py-5 text-xs font-black transition-all relative uppercase tracking-widest",
                       currentTab === tab.id 
-                        ? "text-indigo-600 bg-white" 
-                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-100/50"
+                        ? "text-emerald-500 bg-white/5" 
+                        : "text-slate-500 hover:text-slate-300 hover:bg-white/2"
                     )}
                   >
-                    <tab.icon size={16} />
+                    <tab.icon size={14} />
                     {tab.label}
                     {currentTab === tab.id && (
                       <motion.div 
                         layoutId="activeTab"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       />
                     )}
                   </button>
@@ -1370,85 +1403,95 @@ export default function App() {
                       className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar"
                     >
                       {loading ? (
-                        <div className="h-full flex flex-col items-center justify-center gap-4">
-                          <Loader2 className="animate-spin text-indigo-600" size={40} />
-                          <p className="text-slate-500 font-medium animate-pulse">正在同步本周工作任务...</p>
+                        <div className="h-full flex flex-col items-center justify-center gap-6">
+                          <div className="relative">
+                            <Loader2 className="animate-spin text-emerald-500" size={48} />
+                            <div className="absolute inset-0 blur-xl bg-emerald-500/20 animate-pulse" />
+                          </div>
+                          <p className="text-emerald-500/60 font-black tracking-[0.3em] uppercase text-xs animate-pulse">Synchronizing_Workplace_Data...</p>
                         </div>
                       ) : (
-                        <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
                           {/* Left: Tasks */}
-                          <div className="lg:col-span-2 space-y-8">
+                          <div className="lg:col-span-2 space-y-10">
                             {currentScenario ? (
-                              <div className="space-y-8">
-                                <div className="space-y-4">
-                                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-[10px] font-bold uppercase tracking-wider border border-indigo-100">
-                                    <Target size={12} />
-                                    本周核心任务
+                              <div className="space-y-10">
+                                <div className="space-y-6">
+                                  <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-emerald-500/10 text-emerald-500 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-500/20">
+                                    <Target size={14} />
+                                    CORE_TASK_IDENTIFIED
                                   </div>
-                                  <h2 className="text-3xl font-black text-slate-900 leading-tight">
+                                  <h2 className="text-4xl font-black text-white leading-tight tracking-tight">
                                     {currentScenario.title}
                                   </h2>
-                                  <p className="text-lg text-slate-600 leading-relaxed bg-slate-50 p-6 rounded-2xl border border-slate-100 italic">
-                                    “{currentScenario.description}”
-                                  </p>
+                                  <div className="relative group">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-indigo-500/20 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                                    <p className="relative text-xl text-slate-300 leading-relaxed bg-white/5 p-8 rounded-3xl border border-white/10 italic backdrop-blur-sm">
+                                      “{currentScenario.description}”
+                                    </p>
+                                  </div>
                                 </div>
 
                                 {feedback && (
                                   <motion.div 
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="bg-amber-50 border border-amber-100 p-4 rounded-xl flex gap-3 items-start"
+                                    className="bg-amber-500/10 border border-amber-500/20 p-5 rounded-2xl flex gap-4 items-start backdrop-blur-sm"
                                   >
-                                    <Info className="text-amber-600 shrink-0 mt-0.5" size={18} />
-                                    <p className="text-sm text-amber-800 leading-relaxed font-medium">{feedback}</p>
+                                    <Info className="text-amber-500 shrink-0 mt-0.5" size={20} />
+                                    <p className="text-sm text-amber-200/80 leading-relaxed font-medium">{feedback}</p>
                                   </motion.div>
                                 )}
 
-                                <div className="space-y-4">
-                                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">做出你的抉择</div>
-                                  <div className="grid grid-cols-1 gap-3">
+                                <div className="space-y-6">
+                                  <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4">Execute_Decision_Protocol</div>
+                                  <div className="grid grid-cols-1 gap-4">
                                     {currentScenario.choices.map((choice, idx) => (
                                       <button
                                         key={idx}
                                         onClick={() => handleChoice(choice)}
-                                        className="group relative w-full p-5 text-left bg-white hover:bg-indigo-600 border border-slate-200 hover:border-indigo-600 rounded-2xl transition-all shadow-sm hover:shadow-xl hover:shadow-indigo-100"
+                                        className="group relative w-full p-6 text-left bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/40 rounded-2xl transition-all overflow-hidden"
                                       >
-                                        <div className="flex items-center justify-between">
-                                          <span className="text-slate-700 group-hover:text-white font-bold transition-colors pr-8">
+                                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                                        <div className="flex items-center justify-between relative z-10">
+                                          <span className="text-slate-300 group-hover:text-white font-black transition-colors pr-8 uppercase tracking-wide">
                                             {choice.text}
                                           </span>
-                                          <ChevronRight className="text-slate-300 group-hover:text-white transition-colors" size={20} />
+                                          <ChevronRight className="text-slate-600 group-hover:text-emerald-500 transition-all group-hover:translate-x-1" size={24} />
                                         </div>
                                       </button>
                                     ))}
                                   </div>
 
-                                  <div className="relative mt-8">
+                                  <div className="relative mt-12 mb-8">
                                     <div className="absolute inset-0 flex items-center">
-                                      <div className="w-full border-t border-slate-100"></div>
+                                      <div className="w-full border-t border-white/5"></div>
                                     </div>
-                                    <div className="relative flex justify-center text-xs uppercase">
-                                      <span className="bg-white px-4 text-slate-400 font-bold tracking-widest">或者：自定义回复</span>
+                                    <div className="relative flex justify-center text-[10px] uppercase">
+                                      <span className="bg-[#050505] px-6 text-slate-600 font-black tracking-[0.4em]">Alternative_Input_Override</span>
                                     </div>
                                   </div>
 
-                                  <div className="flex gap-2 mt-4">
-                                    <input 
-                                      type="text" 
-                                      value={userInput}
-                                      onChange={(e) => setUserInput(e.target.value)}
-                                      onKeyDown={(e) => e.key === 'Enter' && handleDialogueSubmit()}
-                                      placeholder="输入你的想法，看看会发生什么..."
-                                      className="flex-1 p-4 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all text-sm"
-                                    />
+                                  <div className="flex gap-3 mt-6">
+                                    <div className="flex-1 relative group">
+                                      <div className="absolute -inset-0.5 bg-emerald-500/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition duration-500"></div>
+                                      <input 
+                                        type="text" 
+                                        value={userInput}
+                                        onChange={(e) => setUserInput(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleDialogueSubmit()}
+                                        placeholder="输入你的想法，看看会发生什么..."
+                                        className="relative w-full p-5 rounded-2xl bg-white/5 border border-white/10 focus:border-emerald-500/50 outline-none transition-all text-sm text-white placeholder:text-slate-600 font-medium"
+                                      />
+                                    </div>
                                     <button 
                                       onClick={handleDialogueSubmit}
                                       disabled={!userInput.trim() || evaluating}
                                       className={cn(
-                                        "px-6 rounded-xl font-bold transition-all flex items-center gap-2",
+                                        "px-8 rounded-2xl font-black transition-all flex items-center gap-2 uppercase tracking-widest text-xs",
                                         userInput.trim() && !evaluating
-                                          ? "bg-slate-900 text-white shadow-lg" 
-                                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                                          ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95" 
+                                          : "bg-white/5 text-slate-600 cursor-not-allowed border border-white/5"
                                       )}
                                     >
                                       {evaluating ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} />}
@@ -1458,21 +1501,22 @@ export default function App() {
                                 </div>
                               </div>
                             ) : (
-                              <div className="h-full flex items-center justify-center">
-                                <p className="text-slate-400">暂无任务，请稍后再试。</p>
+                              <div className="h-full flex flex-col items-center justify-center gap-4 opacity-40">
+                                <Activity size={48} className="text-slate-600" />
+                                <p className="text-slate-500 font-black tracking-[0.2em] uppercase text-xs">No_Active_Tasks_In_Queue</p>
                               </div>
                             )}
                           </div>
 
                           {/* Right: Actions */}
-                          <div className="space-y-6">
-                            <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-6">
+                          <div className="space-y-8">
+                            <div className="bg-white/2 p-8 rounded-[2rem] border border-white/5 space-y-8 backdrop-blur-md">
                               <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">自由行动</h3>
-                                <div className="text-[10px] bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded font-bold">不消耗周数</div>
+                                <h3 className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.3em]">Free_Actions</h3>
+                                <div className="text-[8px] bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded-full font-black border border-emerald-500/20 uppercase tracking-tighter">No_Time_Cost</div>
                               </div>
                               
-                              <div className="grid grid-cols-1 gap-3">
+                              <div className="grid grid-cols-1 gap-4">
                                 <ActionButton 
                                   icon={MessageSquare} 
                                   label="找同事闲聊" 
@@ -1504,25 +1548,28 @@ export default function App() {
                               </div>
                             </div>
 
-                            <div className="bg-indigo-600 text-white p-6 rounded-3xl shadow-xl shadow-indigo-100 space-y-4">
-                              <div className="flex items-center gap-2">
-                                <Trophy size={18} />
-                                <h3 className="text-sm font-black uppercase tracking-widest">当前目标</h3>
-                              </div>
-                              {milestones.find(m => !m.isCompleted) ? (
-                                <div className="space-y-2">
-                                  <p className="text-sm font-bold">{milestones.find(m => !m.isCompleted)?.title}</p>
-                                  <p className="text-xs text-indigo-100 leading-relaxed opacity-80">{milestones.find(m => !m.isCompleted)?.description}</p>
-                                  <div className="pt-2">
-                                    <div className="text-[10px] uppercase font-black text-indigo-200 mb-1">达成条件</div>
-                                    <div className="text-[10px] bg-white/10 p-2 rounded border border-white/10 font-mono">
-                                      {milestones.find(m => !m.isCompleted)?.target}
+                            <div className="relative group">
+                              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-indigo-500 rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                              <div className="relative bg-white/5 text-white p-8 rounded-[2rem] border border-white/10 space-y-6 backdrop-blur-md">
+                                <div className="flex items-center gap-3">
+                                  <Trophy size={20} className="text-emerald-500" />
+                                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500">Active_Milestone</h3>
+                                </div>
+                                {milestones.find(m => !m.isCompleted) ? (
+                                  <div className="space-y-4">
+                                    <p className="text-lg font-black tracking-tight">{milestones.find(m => !m.isCompleted)?.title}</p>
+                                    <p className="text-xs text-slate-400 leading-relaxed font-medium">{milestones.find(m => !m.isCompleted)?.description}</p>
+                                    <div className="pt-4 border-t border-white/5">
+                                      <div className="text-[8px] uppercase font-black text-slate-500 mb-2 tracking-[0.2em]">Success_Criteria</div>
+                                      <div className="text-[10px] bg-white/5 p-3 rounded-xl border border-white/5 font-mono text-emerald-500/80">
+                                        {milestones.find(m => !m.isCompleted)?.target}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              ) : (
-                                <p className="text-sm font-bold">恭喜！你已达成所有目标。</p>
-                              )}
+                                ) : (
+                                  <p className="text-sm font-black text-emerald-500 uppercase tracking-widest">All_Objectives_Secured</p>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1536,44 +1583,47 @@ export default function App() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 10 }}
-                      className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar"
+                      className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar"
                     >
-                      <div className="max-w-3xl mx-auto space-y-8">
+                      <div className="max-w-4xl mx-auto space-y-12">
                         {/* Profile Header */}
-                        <div className="flex flex-col md:flex-row gap-8 items-start bg-slate-900 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
-                          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-                          <div className="w-24 h-24 bg-indigo-600 rounded-2xl flex items-center justify-center text-5xl font-black shrink-0 shadow-2xl border-4 border-white/10">
-                            {userProfile.gender === 'male' ? '👨‍💼' : '👩‍💼'}
-                          </div>
-                          <div className="space-y-4 flex-1">
-                            <div>
-                              <h2 className="text-3xl font-black mb-1">{userProfile.name || '无名产品人'}</h2>
-                              <div className="flex flex-wrap gap-2">
-                                <span className="px-2 py-0.5 bg-white/10 rounded text-[10px] font-bold uppercase tracking-wider border border-white/5">{userProfile.background}</span>
-                                <span className="px-2 py-0.5 bg-white/10 rounded text-[10px] font-bold uppercase tracking-wider border border-white/5">{userProfile.education} · {userProfile.schoolTier}</span>
-                                <span className="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded text-[10px] font-bold uppercase tracking-wider border border-indigo-500/30">{selectedCompany.name}</span>
-                              </div>
+                        <div className="relative group">
+                          <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-indigo-500/20 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                          <div className="relative flex flex-col md:flex-row gap-10 items-start bg-white/5 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/10 overflow-hidden">
+                            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-[100px]" />
+                            <div className="w-32 h-32 bg-white/5 rounded-3xl flex items-center justify-center text-6xl font-black shrink-0 shadow-2xl border border-white/10 relative z-10">
+                              {userProfile.gender === 'male' ? '👨‍💼' : '👩‍💼'}
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/10">
+                            <div className="space-y-6 flex-1 relative z-10">
                               <div>
-                                <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">当前职级</div>
-                                <div className="text-sm font-bold text-indigo-400">{stats.stage}</div>
+                                <h2 className="text-4xl font-black mb-3 tracking-tight text-white">{userProfile.name || 'UNNAMED_OPERATIVE'}</h2>
+                                <div className="flex flex-wrap gap-3">
+                                  <span className="px-3 py-1 bg-white/5 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] border border-white/10 text-slate-400">{userProfile.background}</span>
+                                  <span className="px-3 py-1 bg-white/5 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] border border-white/10 text-slate-400">{userProfile.education} · {userProfile.schoolTier}</span>
+                                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-500/20">{selectedCompany.name}</span>
+                                </div>
                               </div>
-                              <div>
-                                <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">入职时长</div>
-                                <div className="text-sm font-bold">{stats.tenureWeeks} 周</div>
-                              </div>
-                              <div>
-                                <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">职业进度</div>
-                                <div className="text-sm font-bold">{stats.careerProgress}%</div>
-                              </div>
-                              <div>
-                                <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">精神状态</div>
-                                <div className={cn(
-                                  "text-sm font-bold",
-                                  stats.stress > 80 ? "text-rose-400" : stats.stress > 50 ? "text-amber-400" : "text-emerald-400"
-                                )}>
-                                  {stats.stress > 80 ? '极度焦虑' : stats.stress > 50 ? '压力山大' : '心态平稳'}
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-6 border-t border-white/5">
+                                <div>
+                                  <div className="text-[10px] text-slate-500 font-black uppercase mb-2 tracking-[0.2em]">Current_Grade</div>
+                                  <div className="text-sm font-black text-emerald-500 font-mono">{stats.stage}</div>
+                                </div>
+                                <div>
+                                  <div className="text-[10px] text-slate-500 font-black uppercase mb-2 tracking-[0.2em]">Tenure_Duration</div>
+                                  <div className="text-sm font-black text-white font-mono">{stats.tenureWeeks} WEEKS</div>
+                                </div>
+                                <div>
+                                  <div className="text-[10px] text-slate-500 font-black uppercase mb-2 tracking-[0.2em]">Career_Sync</div>
+                                  <div className="text-sm font-black text-white font-mono">{stats.careerProgress}%</div>
+                                </div>
+                                <div>
+                                  <div className="text-[10px] text-slate-500 font-black uppercase mb-2 tracking-[0.2em]">Mental_Stability</div>
+                                  <div className={cn(
+                                    "text-sm font-black font-mono",
+                                    stats.stress > 80 ? "text-rose-500" : stats.stress > 50 ? "text-amber-500" : "text-emerald-500"
+                                  )}>
+                                    {stats.stress > 80 ? 'CRITICAL' : stats.stress > 50 ? 'UNSTABLE' : 'OPTIMAL'}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1581,37 +1631,42 @@ export default function App() {
                         </div>
 
                         {/* Milestones Section */}
-                        <div className="space-y-6">
-                          <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                            <Flag size={16} />
-                            职业里程碑
+                        <div className="space-y-8">
+                          <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] flex items-center gap-3">
+                            <Flag size={18} className="text-emerald-500" />
+                            Career_Milestones_Log
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {milestones.map((m) => (
                               <div 
                                 key={m.id} 
                                 className={cn(
-                                  "p-5 rounded-2xl border transition-all flex items-start gap-4",
+                                  "p-6 rounded-3xl border transition-all flex items-start gap-5 relative overflow-hidden group",
                                   m.isCompleted 
-                                    ? "bg-emerald-50 border-emerald-100" 
-                                    : "bg-white border-slate-100 opacity-60"
+                                    ? "bg-emerald-500/5 border-emerald-500/20" 
+                                    : "bg-white/2 border-white/5 opacity-40"
                                 )}
                               >
+                                {m.isCompleted && (
+                                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+                                )}
                                 <div className={cn(
-                                  "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
-                                  m.isCompleted ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-400"
+                                  "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all group-hover:scale-110",
+                                  m.isCompleted 
+                                    ? "bg-emerald-500 text-black border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.4)]" 
+                                    : "bg-white/5 text-slate-600 border-white/5"
                                 )}>
-                                  {m.isCompleted ? <Check size={20} /> : <Lock size={18} />}
+                                  {m.isCompleted ? <Check size={24} strokeWidth={3} /> : <Lock size={20} />}
                                 </div>
-                                <div>
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <span className={cn("font-bold", m.isCompleted ? "text-emerald-700" : "text-slate-600")}>{m.title}</span>
-                                    {m.isCompleted && <span className="text-[10px] bg-emerald-200 text-emerald-700 px-1.5 py-0.5 rounded font-bold">已达成</span>}
+                                <div className="relative z-10">
+                                  <div className="flex items-center gap-3 mb-2">
+                                    <span className={cn("font-black uppercase tracking-wider", m.isCompleted ? "text-emerald-500" : "text-slate-400")}>{m.title}</span>
+                                    {m.isCompleted && <span className="text-[8px] bg-emerald-500/20 text-emerald-500 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter border border-emerald-500/30">Verified</span>}
                                   </div>
-                                  <p className="text-xs text-slate-500 leading-relaxed">{m.description}</p>
+                                  <p className="text-xs text-slate-500 leading-relaxed font-medium">{m.description}</p>
                                   {!m.isCompleted && (
-                                    <div className="mt-2 text-[10px] font-mono text-slate-400 bg-slate-50 p-1.5 rounded border border-slate-100">
-                                      目标: {m.target}
+                                    <div className="mt-4 text-[9px] font-mono text-slate-600 bg-white/2 p-2 rounded-lg border border-white/5 uppercase tracking-widest">
+                                      Req: {m.target}
                                     </div>
                                   )}
                                 </div>
@@ -1621,29 +1676,29 @@ export default function App() {
                         </div>
 
                         {/* Detailed Stats */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-6">
-                            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                              <TrendingUp size={16} />
-                              核心能力指标
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                          <div className="space-y-8">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] flex items-center gap-3">
+                              <TrendingUp size={18} className="text-emerald-500" />
+                              Core_Competency_Matrix
                             </h3>
                             <div className="space-y-4">
-                              <StatCard icon={Zap} label="产品质量" value={stats.productQuality} color="text-indigo-600" />
-                              <StatCard icon={Users} label="团队信任" value={stats.teamTrust} color="text-emerald-600" />
-                              <StatCard icon={AlertCircle} label="压力值" value={stats.stress} color="text-rose-600" />
+                              <StatCard icon={Zap} label="产品质量" value={stats.productQuality} color="text-emerald-500" />
+                              <StatCard icon={Users} label="团队信任" value={stats.teamTrust} color="text-emerald-500" />
+                              <StatCard icon={AlertCircle} label="压力值" value={stats.stress} color="text-rose-500" />
                             </div>
                           </div>
-                          <div className="space-y-6">
-                            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                              <Heart size={16} />
-                              人际与认可
+                          <div className="space-y-8">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] flex items-center gap-3">
+                              <Heart size={18} className="text-emerald-500" />
+                              Social_Recognition_Index
                             </h3>
                             <div className="space-y-4">
-                              <StatCard icon={Star} label="领导认可度" value={stats.leadershipRecognition} color="text-amber-600" />
+                              <StatCard icon={Star} label="领导认可度" value={stats.leadershipRecognition} color="text-amber-500" />
                               <StatCard icon={Heart} label="同事喜爱度" value={stats.colleagueLikability} color="text-rose-500" />
-                              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                <div className="text-xs font-bold text-slate-500 mb-2">公司评价</div>
-                                <p className="text-xs text-slate-400 leading-relaxed italic">
+                              <div className="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
+                                <div className="text-[8px] font-black text-slate-500 mb-3 uppercase tracking-[0.2em]">Corp_Evaluation_Summary</div>
+                                <p className="text-xs text-slate-400 leading-relaxed italic font-medium">
                                   “{stats.leadershipRecognition > 70 ? '老板眼中的明日之星' : stats.leadershipRecognition > 40 ? '一个靠谱的执行者' : '还需要更多亮眼的产出'}”
                                 </p>
                               </div>
@@ -1660,52 +1715,52 @@ export default function App() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 10 }}
-                      className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar"
+                      className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar"
                     >
-                      <div className="max-w-2xl mx-auto">
-                        <div className="flex items-center justify-between mb-8">
-                          <h3 className="text-xl font-black text-slate-900">职场动态</h3>
-                          <div className="text-xs text-slate-400 font-bold">实时同步中...</div>
+                      <div className="max-w-3xl mx-auto">
+                        <div className="flex items-center justify-between mb-10">
+                          <h3 className="text-2xl font-black text-white tracking-tight">职场动态</h3>
+                          <div className="text-[10px] text-emerald-500/60 font-black uppercase tracking-[0.2em] animate-pulse">Real_Time_Sync_Active</div>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="space-y-8">
                           {feed.length > 0 ? feed.map((item) => (
-                            <div key={item.id} className="relative pl-8 pb-6 border-l border-slate-100 last:pb-0">
+                            <div key={item.id} className="relative pl-10 pb-8 border-l border-white/5 last:pb-0">
                               <div className={cn(
-                                "absolute left-0 top-0 -translate-x-1/2 w-8 h-8 rounded-full border-4 border-white flex items-center justify-center shadow-sm",
-                                item.type === 'choice' ? "bg-indigo-600 text-white" : 
-                                item.type === 'social' ? "bg-amber-500 text-white" : "bg-slate-900 text-white"
+                                "absolute left-0 top-0 -translate-x-1/2 w-10 h-10 rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl backdrop-blur-xl",
+                                item.type === 'choice' ? "bg-emerald-500 text-black" : 
+                                item.type === 'social' ? "bg-amber-500 text-black" : "bg-white/10 text-white"
                               )}>
-                                {item.type === 'choice' ? <Check size={12} /> : 
-                                 item.type === 'social' ? <Users size={12} /> : 
-                                 item.type === 'chat' ? <MessageSquare size={12} /> : <Search size={12} />}
+                                {item.type === 'choice' ? <Check size={16} strokeWidth={3} /> : 
+                                 item.type === 'social' ? <Users size={16} /> : 
+                                 item.type === 'chat' ? <MessageSquare size={16} /> : <Search size={16} />}
                               </div>
-                              <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                                <div className="flex items-center justify-between mb-2">
+                              <div className="bg-white/5 p-6 rounded-3xl border border-white/10 hover:bg-white/[0.08] transition-all group backdrop-blur-sm">
+                                <div className="flex items-center justify-between mb-3">
                                   <span className={cn(
-                                    "text-[10px] font-black uppercase tracking-widest",
-                                    item.type === 'choice' ? "text-indigo-600" : 
-                                    item.type === 'social' ? "text-amber-600" : 
-                                    item.type === 'chat' ? "text-emerald-600" : "text-rose-500"
+                                    "text-[10px] font-black uppercase tracking-[0.2em]",
+                                    item.type === 'choice' ? "text-emerald-500" : 
+                                    item.type === 'social' ? "text-amber-500" : 
+                                    item.type === 'chat' ? "text-emerald-400" : "text-rose-400"
                                   )}>
-                                    {item.type === 'choice' ? '我的决策' : 
-                                     item.type === 'social' ? '职场见闻' : 
-                                     item.type === 'chat' ? '群聊通知' : '小道消息'}
+                                    {item.type === 'choice' ? 'Decision_Logged' : 
+                                     item.type === 'social' ? 'Social_Intel' : 
+                                     item.type === 'chat' ? 'Comm_Channel' : 'Rumor_Intercept'}
                                   </span>
-                                  <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold">
-                                    <Clock size={10} />
-                                    第 {item.week} 周
+                                  <div className="flex items-center gap-2 text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                                    <Clock size={12} className="text-slate-600" />
+                                    WEEK {item.week}
                                   </div>
                                 </div>
-                                <p className="text-sm text-slate-700 leading-relaxed">{item.content}</p>
+                                <p className="text-sm text-slate-300 leading-relaxed font-medium group-hover:text-white transition-colors">{item.content}</p>
                               </div>
                             </div>
                           )) : (
-                            <div className="text-center py-20">
-                              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Activity size={24} className="text-slate-300" />
+                            <div className="text-center py-24 opacity-40">
+                              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
+                                <Activity size={32} className="text-slate-600" />
                               </div>
-                              <p className="text-slate-400 text-sm">暂无动态，开始工作以产生记录。</p>
+                              <p className="text-slate-500 font-black tracking-[0.2em] uppercase text-xs">No_Dynamics_Detected</p>
                             </div>
                           )}
                         </div>
@@ -1722,43 +1777,51 @@ export default function App() {
               key="end"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-white p-12 rounded-3xl border border-slate-200 shadow-2xl text-center"
+              className="glass-panel p-12 md:p-20 rounded-[3.5rem] border border-white/10 text-center max-w-2xl mx-auto relative overflow-hidden"
             >
+              <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+              
               <div className={cn(
-                "w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6",
-                status === GameStatus.WIN ? "bg-emerald-100" : "bg-rose-100"
+                "w-28 h-28 rounded-[2rem] flex items-center justify-center mx-auto mb-10 border relative z-10",
+                status === GameStatus.WIN 
+                  ? "bg-emerald-500 text-black border-emerald-400 shadow-[0_0_40px_rgba(16,185,129,0.3)]" 
+                  : "bg-rose-500 text-white border-rose-400 shadow-[0_0_40px_rgba(244,63,94,0.3)]"
               )}>
                 {status === GameStatus.WIN ? (
-                  <Trophy size={48} className="text-emerald-600" />
+                  <Trophy size={56} strokeWidth={2.5} />
                 ) : (
-                  <Skull size={48} className="text-rose-600" />
+                  <Skull size={56} strokeWidth={2.5} />
                 )}
               </div>
               
-              <h2 className="text-4xl font-black mb-4">
-                {status === GameStatus.WIN ? "职业巅峰！" : "职业终局"}
+              <h2 className="text-5xl font-black mb-6 tracking-tighter text-white uppercase">
+                {status === GameStatus.WIN ? "Simulation_Success" : "Simulation_Terminated"}
               </h2>
-              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-8 max-w-lg mx-auto italic text-slate-600 leading-relaxed">
-                “{gameOverReason || (status === GameStatus.WIN ? "你凭借卓越的表现赢得了所有人的尊重。" : "你的职业生涯在此告一段落。")}”
+              
+              <div className="relative group mb-12">
+                <div className="absolute -inset-1 bg-white/5 rounded-3xl blur opacity-20" />
+                <div className="relative bg-white/5 p-8 rounded-3xl border border-white/10 italic text-slate-300 leading-relaxed font-medium text-lg backdrop-blur-sm">
+                  “{gameOverReason || (status === GameStatus.WIN ? "你凭借卓越的表现赢得了所有人的尊重。" : "你的职业生涯在此告一段落。")}”
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-8 max-w-sm mx-auto">
-                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                  <div className="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">职业时长</div>
-                  <div className="text-2xl font-bold">{stats.tenureWeeks} 周</div>
+              <div className="grid grid-cols-2 gap-6 mb-12 max-w-md mx-auto">
+                <div className="p-6 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-sm">
+                  <div className="text-[10px] text-slate-500 uppercase font-black tracking-[0.2em] mb-2">Total_Tenure</div>
+                  <div className="text-3xl font-black text-white font-mono">{stats.tenureWeeks} <span className="text-xs text-slate-500">WKS</span></div>
                 </div>
-                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                  <div className="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">最终职位</div>
-                  <div className="text-lg font-bold">{stats.stage}</div>
+                <div className="p-6 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-sm">
+                  <div className="text-[10px] text-slate-500 uppercase font-black tracking-[0.2em] mb-2">Final_Grade</div>
+                  <div className="text-xl font-black text-emerald-500 font-mono">{stats.stage}</div>
                 </div>
               </div>
 
               <button 
                 onClick={startGame}
-                className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold transition-all flex items-center gap-2 mx-auto"
+                className="group relative bg-emerald-500 hover:bg-emerald-400 text-black px-12 py-5 rounded-2xl font-black transition-all flex items-center gap-3 mx-auto uppercase tracking-[0.2em] text-sm shadow-[0_0_30px_rgba(16,185,129,0.2)]"
               >
-                <RefreshCcw size={20} />
-                重新开始挑战
+                <RefreshCcw size={20} className="group-hover:rotate-180 transition-transform duration-500" />
+                Restart_Simulation
               </button>
             </motion.div>
           )}
@@ -1789,14 +1852,14 @@ function ActionButton({ icon: Icon, label, desc, onClick, loading }: { icon: any
     <button 
       onClick={onClick}
       disabled={loading}
-      className="w-full p-4 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-2xl transition-all text-left group flex items-center gap-4 disabled:opacity-50"
+      className="w-full p-5 bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/30 rounded-2xl transition-all text-left group flex items-center gap-5 disabled:opacity-50"
     >
-      <div className="w-10 h-10 bg-slate-50 group-hover:bg-white rounded-xl flex items-center justify-center text-slate-400 group-hover:text-indigo-600 transition-colors shrink-0">
-        <Icon size={20} />
+      <div className="w-12 h-12 bg-white/5 group-hover:bg-emerald-500/20 rounded-xl flex items-center justify-center text-slate-500 group-hover:text-emerald-500 transition-all shrink-0 border border-white/5 group-hover:border-emerald-500/30">
+        <Icon size={24} />
       </div>
       <div>
-        <div className="text-sm font-bold text-slate-700 group-hover:text-indigo-700 transition-colors">{label}</div>
-        <div className="text-[10px] text-slate-400 group-hover:text-indigo-400 transition-colors">{desc}</div>
+        <div className="text-sm font-black text-slate-200 group-hover:text-white transition-colors uppercase tracking-wider">{label}</div>
+        <div className="text-[10px] text-slate-500 group-hover:text-emerald-500/60 transition-colors font-mono">{desc}</div>
       </div>
     </button>
   );
@@ -1804,19 +1867,19 @@ function ActionButton({ icon: Icon, label, desc, onClick, loading }: { icon: any
 
 function StatCard({ icon: Icon, label, value, color }: { icon: any, label: string, value: number, color: string }) {
   return (
-    <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-      <div className={cn("w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center", color)}>
-        <Icon size={20} />
+    <div className="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center gap-5 group hover:bg-white/[0.08] transition-colors">
+      <div className={cn("w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 transition-all group-hover:scale-110", color)}>
+        <Icon size={24} />
       </div>
       <div className="flex-1">
-        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</div>
-        <div className="flex items-center justify-between">
-          <div className="text-lg font-black text-slate-800">{value}</div>
-          <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+        <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1.5">{label}</div>
+        <div className="flex items-center justify-between gap-4">
+          <div className="text-2xl font-black text-white font-mono">{value}</div>
+          <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${value}%` }}
-              className={cn("h-full", color.replace('text-', 'bg-'))}
+              className={cn("h-full shadow-[0_0_10px_rgba(0,0,0,0.5)]", color.replace('text-', 'bg-'))}
             />
           </div>
         </div>
@@ -1836,41 +1899,43 @@ function ResultModal({ title, message, impact, onClose }: { title: string, messa
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050505]/80 backdrop-blur-md">
       <motion.div 
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-200"
+        className="glass-panel w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/10 relative"
       >
-        <div className="bg-slate-900 p-6 text-white flex items-center justify-between">
-          <h3 className="text-xl font-black tracking-tight">{title}</h3>
-          <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+        
+        <div className="bg-white/5 p-8 text-white flex items-center justify-between border-b border-white/10">
+          <h3 className="text-xl font-black tracking-tight uppercase tracking-[0.1em]">{title}</h3>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
             <X size={24} />
           </button>
         </div>
         
         <div className="p-8 space-y-8">
-          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 italic text-slate-600 leading-relaxed">
+          <div className="bg-white/5 p-6 rounded-2xl border border-white/5 italic text-slate-300 leading-relaxed font-medium relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/30" />
             “{message}”
           </div>
           
           <div className="space-y-4">
-            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">属性变动</div>
+            <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-1">Impact_Analysis</div>
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(impact).map(([key, value]) => {
                 if (typeof value !== 'number' || value === 0) return null;
                 const isPositive = (key === 'stress') ? value < 0 : value > 0;
                 return (
                   <div key={key} className={cn(
-                    "flex items-center justify-between p-3 rounded-xl border",
-                    isPositive ? "bg-emerald-50 border-emerald-100" : "bg-rose-50 border-rose-100"
+                    "flex items-center justify-between p-4 rounded-xl border transition-all",
+                    isPositive 
+                      ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-500" 
+                      : "bg-rose-500/5 border-rose-500/20 text-rose-500"
                   )}>
-                    <span className="text-xs font-bold text-slate-600">{statLabels[key] || key}</span>
-                    <span className={cn(
-                      "text-sm font-black",
-                      isPositive ? "text-emerald-600" : "text-rose-600"
-                    )}>
+                    <span className="text-[10px] font-black uppercase tracking-wider">{statLabels[key] || key}</span>
+                    <span className="text-sm font-black font-mono">
                       {value > 0 ? '+' : ''}{value}
                     </span>
                   </div>
@@ -1881,9 +1946,9 @@ function ResultModal({ title, message, impact, onClose }: { title: string, messa
           
           <button 
             onClick={onClose}
-            className="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-slate-200"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-5 rounded-2xl font-black transition-all shadow-[0_0_30px_rgba(16,185,129,0.2)] uppercase tracking-[0.2em] text-xs"
           >
-            收到，继续工作
+            Acknowledge_&_Continue
           </button>
         </div>
       </motion.div>
